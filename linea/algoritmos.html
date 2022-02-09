@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <LINK href="style.css" rel="stylesheet" type="text/css">
+    <title>Algortimos basicos para trazado de lineas</title>
+    <script src="directo.js"></script>
+    <script src="dda.js"></script>
+    <script src="bresenham.js"></script>
+    <script src="rellenodirecto.js"></script>
+    <script src="rellenodda.js"></script>
+</head>
+
+<body>
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <div class="input-group-text">
+
+                <label for=""><input checked type="radio" value="Directo" name="Algoritmo" id="Directo"
+                        aria-label="Radio button for following text input">Directo
+                </label>
+                <br>
+            </div>
+            <div class="input-group-text">
+
+                <label for=""><input type="radio" value="DDA" name="Algoritmo" id="DDA"
+                        aria-label="Radio button for following text input"> DDA
+                </label>
+                <br>
+            </div>
+            <div class="input-group-text">
+
+                <label for=""><input type="radio" value="Bresenham" name="Algoritmo" id="Bresenham"
+                        aria-label="Radio button for following text input">Bresenham
+                </label>
+                <br>
+            </div>
+            <button type="button" class="btn-outline-primary" id="boton" onclick="limpiar()"> Limpiar </button>
+            <button type="button" class="btn-outline-primary" id="boton" onclick="llenar()"> LLenar </button>
+            <br>
+            <br>
+        </div>
+    </div>
+
+    <canvas id="canvas" width="1000" height="1000" style="border: 3px solid #000000;" onmousedown="dibujar(event)">
+    </canvas>
+    <!-- <canvas width="600" height="580" style="border: 3px solid #000000;" onmousedown="showCoords(event)">
+    </canvas> -->
+    <p id="demo"></p>
+
+    <script>
+        var xi = 0;
+        var yi = 0;
+        var click1 = true;
+        var lienzo = document.getElementById("canvas").getContext("2d");
+        lienzo.fillStyle = "gray";
+        function dibujar(event) {
+            if (click1) {
+                xi = event.offsetX;
+                yi = event.offsetY;
+                lienzo.fillRect(xi, yi, 4, 4);
+            } else {
+                if (document.getElementById("Directo").checked) {
+                    if ((xi > event.offsetX) && (yi > event.offsetY)) {
+                        // alert("Entra1");
+                        directo(event.offsetX, event.offsetY, xi, yi, lienzo);
+                    } else {
+                        // alert("Entra2");
+                        directo(xi, yi, event.offsetX, event.offsetY, lienzo);
+                    }
+                    // directo(event);
+                    // bresenham(event);
+
+                } else if (document.getElementById("DDA").checked) {
+                    // alert("Se selecciono DDA");
+                    if ((xi > event.offsetX) && (yi > event.offsetY)) {
+                        // alert("Entra dda");
+                        dda(event.offsetX, event.offsetY, xi, yi, lienzo);
+                    } else {
+                        // alert("Entra dda2");
+                        dda(xi, yi, event.offsetX, event.offsetY, lienzo);
+                    }
+                    // dda(event);
+
+                } else if (document.getElementById("Bresenham").checked) {
+                    // alert("Se selecciono metodo Bresenham");
+                    if ((xi > event.offsetX) && (yi > event.offsetY)) {
+                        // alert("Entra bresenham");
+                        bresenham(event.offsetX, event.offsetY, xi, yi, lienzo);
+                    } else {
+                        // alert("Entra bresenham2");
+                        bresenham(xi, yi, event.offsetX, event.offsetY, lienzo);
+                    }
+                    // bresenham(event);
+
+                }
+            }
+            click1 = !click1;
+
+        }
+
+        function limpiar() {
+            var canvas = document.getElementById("canvas");
+            var contexto = canvas.getContext("2d");
+            contexto.clearRect(0, 0, canvas.width, canvas.height);
+        }
+        // LLENADO DE CANVAS
+        function llenar() {
+            if (document.getElementById("Directo").checked) {
+
+                // alert("Entra");
+                llenadoDirecto(0, 0, 1000, 1000, lienzo);
+                // for (var x = 0; x <= 1000; x += 4) {
+                //     llenadoDirecto(x, 0, 1000, 1000, lienzo);
+                    
+                    
+                // }
+
+
+                // directo(event);
+                // bresenham(event);
+
+            } else if (document.getElementById("DDA").checked) {
+                // alert("Se selecciono DDA");
+
+                // alert("Entra dda2");
+                llenadoDDA(0, 0, 1000, 1000, lienzo);
+
+                // dda(event);
+
+            } else if (document.getElementById("Bresenham").checked) {
+                // alert("Se selecciono metodo Bresenham");
+                if ((xi > event.offsetX) && (yi > event.offsetY)) {
+                    // alert("Entra bresenham");
+                    bresenham(event.offsetX, event.offsetY, xi, yi, lienzo);
+                } else {
+                    // alert("Entra bresenham2");
+                    bresenham(xi, yi, event.offsetX, event.offsetY, lienzo);
+                }
+                // bresenham(event);
+
+            }
+
+        }
+
+
+    </script>
+
+</body>
+
+</html>
